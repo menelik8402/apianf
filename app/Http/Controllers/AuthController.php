@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register','checkemail']]);
+        $this->middleware('auth:api', ['except' => ['login','register','index','updated','destroy']]);
     }
 
     /**
@@ -86,10 +86,12 @@ class AuthController extends Controller
     public function register(Request $request){
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:50|min:3',
+            'surname'=> 'required|string|max:50|min:3',
             'email' => 'required|string|unique:users|email|max:255',
             'password'=> 'required|string|min:6',
             'gender' => 'required|string',
-            'birthday'=>'required|string|date_format:Y-m-d'
+            'birthday'=>'required|string|date_format:Y-m-d',
+            'age' => 'required|number',
         ],[
             'name.required' => 'The name is required',
             'email.unique' => 'User with this email exist',
@@ -107,9 +109,30 @@ class AuthController extends Controller
         return response()->json($user, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
                 JSON_UNESCAPED_UNICODE);
     }
-    public function checkemail($email){
 
-         return User::where('email',$email)->count()  ? response()->json(['emailExist' => true],200):
-                                                        response()->json(['emailExist' => false],400);
+    public function index(){
+        $users = User::all();
+
+        return response()->json(['users' => $users], 200);
+
     }
+    public function update(Request $request){
+
+        $user = User::FindOrFail($request->id);
+        $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->age=$request->age;
+        $user->gender = $request->sex;
+        $user->email=$request->email;
+
+        return response()->json(['status' => 'User updated'], 200);
+
+    }
+
+    public function destroy(Request $request){
+        $user = User::destroy($request->id);
+
+        return response()->json(['status' => 'User destroyed'], 200);
+    }
+   
 }

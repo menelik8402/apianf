@@ -26,13 +26,17 @@ Route::group([
 ],
 function ($router) {
 
-    Route::post('accounts/login', 'App\Http\Controllers\AuthController@login');
-    Route::post('accounts/logout', 'App\Http\Controllers\AuthController@logout');
-    Route::post('accounts/refresh', 'App\Http\Controllers\AuthController@refresh');
-    Route::post('accounts/me', 'App\Http\Controllers\AuthController@me');
-    Route::post('accounts/register', 'App\Http\Controllers\AuthController@register');
-    Route::get('accounts/checkemail/{email}', 'App\Http\Controllers\AuthController@checkemail');
-    Route::get('preferences/initialpreferences', 'App\Http\Controllers\FilterController@index');
-    Route::get('gift/giftsbypreference/{filter}', 'App\Http\Controllers\GiftController@getGiftByFilter');
+    Route::post('test/login', 'App\Http\Controllers\AuthController@login');
+    Route::post('test/logout', 'App\Http\Controllers\AuthController@logout');
+    Route::post('test/refresh', 'App\Http\Controllers\AuthController@refresh');
+    Route::post('test/me', 'App\Http\Controllers\AuthController@me');
+
+    Route::post('test/register', 'App\Http\Controllers\AuthController@register');
+
+    Route::get('test/users', 'App\Http\Controllers\AuthController@index');
+    Route::put('test/users/{id}', 'App\Http\Controllers\AuthController@update');
+    Route::delete('test/users/{id}', 'App\Http\Controllers\AuthController@destroy');
+
+    
 });
 
